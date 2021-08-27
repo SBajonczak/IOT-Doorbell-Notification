@@ -1,49 +1,71 @@
+
 ![image](https://github.com/SBajonczak/hivemonitor/workflows/PlatformIO%20CI/badge.svg)
 ![image](https://img.shields.io/github/v/tag/SBajonczak/hivemonitor.svg)
 
 ## :ledger: Index
+**Table of Contents**
 
-- [About](#beginner-about)
-- [Technologies](#zap-technologies)
-  - [Configured Platforms](#configured_platforms)
-  - [Development](#package-development)
-  - [Pre-Requisites](#notebook-pre-Requisites)
-  - [Branches](#cactus-branches)
-- [Development Environment](#nut_and_bolt-development_environment)
-  - [Build the Firmware](#hammer-build_the_firmware)
-  - [Upload firmware](#rocket-upload_the__firmware)
-  - [Upload the configuration](#page_facing_up-upload_the_configuration)  
-- [Hardwaresetup](#electric_plug-hardwaresetup)
-  - [Components List](#components_List)
-  - [Wiring Schema](#wiring_schema)
-  - [Wiring H30A to HX711](#wiring_h30a_to_hx711)
+- [:beginner: About](#beginner-about)
+- [:electric_plug:  Hardwaresetup](#electric_plug--hardwaresetup)
+  - [Components List](#components-list)
+- [:notebook:Pre-Requisites](#notebookpre-requisites)
+- [:cactus: Branches](#cactus-branches)
+- [:nut_and_bolt: Development Environment](#nut_and_bolt-development-environment)
+  - [:hammer: Build the Firmware](#hammer-build-the-firmware)
+  - [:rocket: Upload the firmware](#rocket-upload-the-firmware)
+  - [:page_facing_up: Upload the configuration](#page_facing_up-upload-the-configuration)
 - [Configuration](#configuration)
-  - [Upload_Configuration](#upload_configuration)
-- [Planned Features](#planned_features)
+  - [Upload Predefined Configuration](#upload-predefined-configuration)
+- [Planned Features](#planned-features)
+- [FAQ](#faq)
+- [My device does not start the AP mode](#my-device-does-not-start-the-ap-mode)
+
+
 # :beginner: About
-In my homeoffice I wear always ma headphones. So I sometimes didn't realize that my doorbell rings. 
+In my homeoffice I wear always my headphones. 
+So I sometimes didn't realize that my doorbell rings. 
 
-So I decided, to connect an ESP Device to my doorbell. This will trigger the esp up from it's sleep and send me a small message to my broker. 
-So that I will get an notification onto my desktop.
+So I decided, to connect an ESP Device to my doorbell. This will trigger the esp up from it's sleep and send me a small message to my Teams or alexa or s.th. 
 
-# Technologies
-This project will not work alone, so it has dependencies. 
+My standard doorbell wiring is like this schematic design. 
 
-## Configured Platforms
-Actually it was Build and Testet on the following device
+![Simple Installation](./doorbell_wiring.png)
 
-* ESP 8266 Devboard
+My Problem is that I never thrust any IT design, so I need a safe backup.
+The Bell must be ringing, whatever happens. So the new architecture must follow this flow:
 
-## :package: Development
+![Flowchart](./flow.png)
+
+1. Pushing the Button
+2. The Bell is ringing
+3. The Esp will wake up from it's deep sleep state
+4. The ESP will send a message to the MQTT Server
+5. IOBroker will react on the message and send a notification to e.g. Alexa
+
+You will se, that the ESP Device will __attached__ to the doorbell as a secondary device.  
+
+# :electric_plug:  Hardwaresetup 
+So ater different tryouts, I reuslted with this diagram: 
+
+![Hardware Setup](./Wiring_Wemos.png)
+I Use the optocoupler, because this will wake up my wemos device. This device will be battery powered to. 
 
 
-## :notebook:Pre-Requisites
+## Components List
+I Ordered the following parts from my local seller
+
+* Wemos D1 Mini
+* Resistor, 330Ω
+* Diode, 1N4148
+* Optocoupler, PC817
+
+
+# :notebook:Pre-Requisites
 
 * bblanchon/ArduinoJson@^6.18.3
-* bblanchon/StreamUtils@^1.6.1
 * knolleary/PubSubClient@^2.8
 
-## :cactus: Branches
+# :cactus: Branches
 Here some description about the used branches
 
 |Branch|Description|
@@ -65,8 +87,6 @@ You can Build your firmware very easyly with the following command:
 ```bash
 make build-complete
 ```
-
-
 ## :rocket: Upload the firmware
 After a successfull build you can upload it to your connected device with: 
 
@@ -87,16 +107,6 @@ export PLATFORMIO_UPLOAD_PORT=/dev/ttyUSB0
 make upload-config
 ```
 
-# :electric_plug:  Hardwaresetup 
-The following section will describe the hardware construction
-
-## Components List
-I Ordered the following parts from my local seller
-
-TBD
-
-## Wiring Schema
- TBD
 
 # Configuration 
 The Configuration is done with an json file. An example of it looks like this:
