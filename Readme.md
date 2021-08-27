@@ -34,7 +34,7 @@ My standard doorbell wiring is like this schematic design.
 My Problem is that I never thrust any IT design, so I need a safe backup.
 The Bell must be ringing, whatever happens. So the new architecture must follow this flow:
 
-![Flowchart](./flow.png)
+![Flowchart](./Flow.PNG)
 
 1. Pushing the Button
 2. The Bell is ringing
