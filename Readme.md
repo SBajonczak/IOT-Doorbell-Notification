@@ -115,14 +115,14 @@ The Configuration is done with an json file. An example of it looks like this:
 {
    
     "wifi": {
-        "ssid": "",
-        "password": "33"
+        "ssid": "WifiName",
+        "password": "Password"
     },
     "mqtt": {
-        "server": "kjkhj",
-        "port": 0,
-        "user": "null",
-        "password": "null"
+        "server": "My Server IP",
+        "port": 1235,
+        "user": "Username",
+        "password": "Password"
     }
 
 }
