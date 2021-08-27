@@ -1,3 +1,4 @@
+
 ![image](https://github.com/SBajonczak/hivemonitor/workflows/PlatformIO%20CI/badge.svg)
 ![image](https://img.shields.io/github/v/tag/SBajonczak/hivemonitor.svg)
 
@@ -5,37 +6,34 @@
 **Table of Contents**
 
 - [:beginner: About](#beginner-about)
-- [Technologies](#technologies)
-  - [Configured Platforms](#configured-platforms)
-  - [:package: Development](#package-development)
-  - [:notebook:Pre-Requisites](#notebookpre-requisites)
-  - [:cactus: Branches](#cactus-branches)
+- [:electric_plug:  Hardwaresetup](#electric_plug--hardwaresetup)
+  - [Components List](#components-list)
+- [:notebook:Pre-Requisites](#notebookpre-requisites)
+- [:cactus: Branches](#cactus-branches)
 - [:nut_and_bolt: Development Environment](#nut_and_bolt-development-environment)
   - [:hammer: Build the Firmware](#hammer-build-the-firmware)
   - [:rocket: Upload the firmware](#rocket-upload-the-firmware)
   - [:page_facing_up: Upload the configuration](#page_facing_up-upload-the-configuration)
-- [:electric_plug:  Hardwaresetup](#electric_plug--hardwaresetup)
-  - [Components List](#components-list)
-  - [Wiring Schema](#wiring-schema)
 - [Configuration](#configuration)
   - [Upload Predefined Configuration](#upload-predefined-configuration)
 - [Planned Features](#planned-features)
 - [FAQ](#faq)
 - [My device does not start the AP mode](#my-device-does-not-start-the-ap-mode)
 
+
 # :beginner: About
-In my homeoffice I wear always ma headphones. So I sometimes didn't realize that my doorbell rings. 
+In my homeoffice I wear always my headphones. 
+So I sometimes didn't realize that my doorbell rings. 
 
-So I decided, to connect an ESP Device to my doorbell. This will trigger the esp up from it's sleep and send me a small message to my broker. 
-So that I will get an notification onto my desktop.
+So I decided, to connect an ESP Device to my doorbell. This will trigger the esp up from it's sleep and send me a small message to my Teams or alexa or s.th. 
 
-
-The standard doorbell wiring is simple: 
+My standard doorbell wiring is like this schematic design. 
 
 ![Simple Installation](./doorbell_wiring.png)
 
+My Problem is that I never thrust any IT design, so I need a safe backup.
+The Bell must be ringing, whatever happens. So the new architecture must follow this flow:
 
-My idea is simple:
 ![Flowchart](./flow.png)
 
 1. Pushing the Button
@@ -44,26 +42,30 @@ My idea is simple:
 4. The ESP will send a message to the MQTT Server
 5. IOBroker will react on the message and send a notification to e.g. Alexa
 
-So ater differen tryouts, I reuslted with this diagram: 
+You will se, that the ESP Device will __attached__ to the doorbell as a secondary device.  
+
+# :electric_plug:  Hardwaresetup 
+So ater different tryouts, I reuslted with this diagram: 
 
 ![Hardware Setup](./Wiring_Wemos.png)
 I Use the optocoupler, because this will wake up my wemos device. This device will be battery powered to. 
 
 
-
-
-## Configured Platforms
-Actually it was Build and Testet on the following device
+## Components List
+I Ordered the following parts from my local seller
 
 * Wemos D1 Mini
+* Resistor, 330Ω
+* Diode, 1N4148
+* Optocoupler, PC817
 
 
-## :notebook:Pre-Requisites
+# :notebook:Pre-Requisites
 
 * bblanchon/ArduinoJson@^6.18.3
 * knolleary/PubSubClient@^2.8
 
-## :cactus: Branches
+# :cactus: Branches
 Here some description about the used branches
 
 |Branch|Description|
@@ -104,16 +106,6 @@ This upload the firmware throught the /dev/ttyUSB0 port.
 export PLATFORMIO_UPLOAD_PORT=/dev/ttyUSB0
 make upload-config
 ```
-
-# :electric_plug:  Hardwaresetup 
-
-## Components List
-I Ordered the following parts from my local seller
-
-* Resistor, 330Ω
-* Diode, 1N4148
-* Optocoupler, PC817
-
 
 
 # Configuration 
