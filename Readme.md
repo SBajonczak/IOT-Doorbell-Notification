@@ -29,7 +29,7 @@ So I decided, to connect an ESP Device to my doorbell. This will trigger the esp
 
 My standard doorbell wiring is like this schematic design. 
 
-![Simple Installation](./doorbell_wiring.png)
+![Simple Installation](./doorbell_wiring.PNG)
 
 My Problem is that I never thrust any IT design, so I need a safe backup.
 The Bell must be ringing, whatever happens. So the new architecture must follow this flow:
@@ -47,7 +47,7 @@ You will se, that the ESP Device will __attached__ to the doorbell as a secondar
 # :electric_plug:  Hardwaresetup 
 So ater different tryouts, I reuslted with this diagram: 
 
-![Hardware Setup](./Wiring_Wemos.png)
+![Hardware Setup](./Wiring_Wemos.PNG)
 I Use the optocoupler, because this will wake up my wemos device. This device will be battery powered to. 
 
 
