@@ -38,4 +38,4 @@ jobs:
           pip install --upgrade platformio
 
       - name: Run build
-        run: pio run -e esp12e/complete
+        run: pio run -e espdev/complete
