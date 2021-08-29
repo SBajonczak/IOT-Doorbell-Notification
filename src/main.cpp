@@ -1,11 +1,15 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
-#include "ConfigurationManager.h"
 #include <Ticker.h>
 
-const char *TOPICNAME = "devices/doorbell/active";
+#include "ConfigurationManager.h"
+#include "BatteryProcessor.h"
+
+const char *BELL_TOPIC_NAME = "devices/doorbell/active";
+const char *BATTERY_TOPIC_NAME = "devices/doorbell/battery";
 WiFiClient espClient;
 PubSubClient client(espClient);
+BatteryProcessor battery;
 #ifdef USE_LED
 Ticker ticker;
 #endif
@@ -13,6 +17,7 @@ Ticker ticker;
 #ifdef USE_LED
 void tick()
 {
+
   //toggle state
   int state = digitalRead(BUILTIN_LED); // get the current state of GPIO1 pin
   digitalWrite(BUILTIN_LED, !state);    // set pin to the opposite state
@@ -38,10 +43,12 @@ void sendMQTTMessage()
   {
     reconnect();
   }
-  client.publish(TOPICNAME, "1");
+
+  client.publish(BELL_TOPIC_NAME, "1");
+  client.publish(BATTERY_TOPIC_NAME, String(battery.getVolt()).c_str());
   delay(1000);
-  client.publish(TOPICNAME, "0");
 }
+
 
 void setup()
 {
@@ -76,7 +83,7 @@ void setup()
   IPAddress ipAdress;
   ipAdress.fromString(ConfigurationManager::getInstance()->GetMqttServer());
   client.setServer(ipAdress, ConfigurationManager::getInstance()->GetMqttPort());
-  
+
   sendMQTTMessage();
 
 #ifdef USE_LED
