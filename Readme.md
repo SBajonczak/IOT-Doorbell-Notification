@@ -152,12 +152,3 @@ After you modified the configuration to your setting, you can upload this to you
 # Planned Features
 
 Nothing planed at the moment
-# FAQ
-
-# My device does not start the AP mode
-In this case you must erase the complete flash memmory of your device. 
-You can do it in platform io with: 
-
-```
-pio run --target erase 
-```
