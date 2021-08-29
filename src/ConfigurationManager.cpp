@@ -26,6 +26,9 @@ String ConfigurationManager::GetMqttServer() { return this->MqttServer; }
 int ConfigurationManager::GetMqttPort() { return this->MqttPort; }
 String ConfigurationManager::GetMqttUser() { return this->MqttUser; }
 String ConfigurationManager::GetMqttPassword() { return this->MqttPassword; }
+String ConfigurationManager::GetBaseTopic() { return this->BaseToic; }
+
+
 
 String ConfigurationManager::GetJson()
 {
@@ -54,6 +57,9 @@ DynamicJsonDocument ConfigurationManager::GetJsonDocument()
   doc["mqtt"]["port"] = this->GetMqttPort();
   doc["mqtt"]["user"] = this->GetMqttUser();
   doc["mqtt"]["password"] = this->GetMqttPassword();
+  doc["mqtt"]["basetopic"] = this->GetBaseTopic();
+
+  
   return doc;
 }
 
@@ -67,9 +73,11 @@ void ConfigurationManager::ApplyJsonInput(String json)
   this->MqttUser = jData["mqtt"]["user"].as<String>();
   this->MqttPassword = jData["mqtt"]["password"].as<String>();
   this->MqttPort = jData["mqtt"]["port"];
+  this->BaseToic = jData["mqtt"]["basetopic"].as<String>();
 
   this->WifiSsid = jData["wifi"]["ssid"].as<String>();
   this->WifiPassword = jData["wifi"]["password"].as<String>();
+  
 }
 
 void ConfigurationManager::StoreSettings()

@@ -20,6 +20,7 @@ public:
   int GetMqttPort();
   String GetMqttUser();
   String GetMqttPassword();
+  String GetBaseTopic();
 
   String GetJson();
   void StoreSettings();
@@ -41,6 +42,7 @@ private:
   int SleepTime;
   String WifiSsid;
   String WifiPassword;
+  String BaseToic;
 
   String MqttServer;
   String MqttUser;

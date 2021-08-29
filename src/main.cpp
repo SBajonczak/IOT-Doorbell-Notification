@@ -39,16 +39,21 @@ boolean reconnect()
 
 void sendMQTTMessage()
 {
+
+  char deviceId[13]; // need to define the static variable
+  uint8_t mac[6];
+  WiFi.macAddress(mac);
+  snprintf(deviceId, 13, "%02x%02x%02x%02x%02x%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
   if (!client.connected())
   {
     reconnect();
   }
-
-  client.publish(BELL_TOPIC_NAME, "1");
-  client.publish(BATTERY_TOPIC_NAME, String(battery.getVolt()).c_str());
+  String bellTopic= ConfigurationManager::getInstance()->GetBaseTopic()+"/"+ deviceId + "/active";
+  String batTopic = ConfigurationManager::getInstance()->GetBaseTopic()+"/"+ deviceId + "/voltage";
+  client.publish(bellTopic.c_str(), "1");
+  client.publish(batTopic.c_str(), String(battery.getVolt()).c_str());
   delay(1000);
 }
-
 
 void setup()
 {

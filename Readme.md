@@ -1,25 +1,22 @@
-
 ![image](https://github.com/SBajonczak/hivemonitor/workflows/PlatformIO%20CI/badge.svg)
 ![image](https://img.shields.io/github/v/tag/SBajonczak/hivemonitor.svg)
 
 ## :ledger: Index
 **Table of Contents**
-
 - [:beginner: About](#beginner-about)
 - [:electric_plug:  Hardwaresetup](#electric_plug--hardwaresetup)
   - [Components List](#components-list)
 - [:notebook:Pre-Requisites](#notebookpre-requisites)
 - [:cactus: Branches](#cactus-branches)
+- [MQTT](#mqtt)
 - [:nut_and_bolt: Development Environment](#nut_and_bolt-development-environment)
   - [:hammer: Build the Firmware](#hammer-build-the-firmware)
+  - [Compilerflags](#compilerflags)
   - [:rocket: Upload the firmware](#rocket-upload-the-firmware)
   - [:page_facing_up: Upload the configuration](#page_facing_up-upload-the-configuration)
 - [Configuration](#configuration)
   - [Upload Predefined Configuration](#upload-predefined-configuration)
 - [Planned Features](#planned-features)
-- [FAQ](#faq)
-- [My device does not start the AP mode](#my-device-does-not-start-the-ap-mode)
-
 
 # :beginner: About
 In my homeoffice I wear always my headphones. 
@@ -43,6 +40,8 @@ The Bell must be ringing, whatever happens. So the new architecture must follow 
 5. IOBroker will react on the message and send a notification to e.g. Alexa
 
 You will se, that the ESP Device will __attached__ to the doorbell as a secondary device.  
+
+
 
 # :electric_plug:  Hardwaresetup 
 So ater different tryouts, I reuslted with this diagram: 
@@ -74,6 +73,19 @@ Here some description about the used branches
 |development|In this branch, I will put every development work for now. This branch is __NOT__ stable|
 
 
+# MQTT
+The Data will be transfered to the configured MQTT Server.
+The default topic name will be build on the configured basetopic, concatenated with the unique deviced id. 
+Then followed by the active or the voltage value.
+
+In my setup it will shown up like this: 
+
+![mqtt Messages](./mqtt.PNG)
+
+|Topicname|Description|
+|{_BseTopic_}/{_UniqueDeviceID_}/active|This will be set everytime to one when the device wake up.|
+|{_BseTopic_}/{_UniqueDeviceID_}/voltage|This value will hold the last measured voltage.|
+
 # :nut_and_bolt: Development Environment
 First of all, the follwing commands required an installation of Platform IO. You can install it with the follwoing command: 
 
@@ -97,25 +109,15 @@ platform = espressif8266
 board = d1_mini
 framework = arduino
 build_flags =   
-                -D BAT_TOPIC="dev/test/bat"
-                -D BELL_TOPIC="dev/test/ring"
-                -D BATT_LOW_VOLTAGE=1.1
-                -D BATT_WARNING_VOLTAGE=3.2
+                
                 -D WIFI_CONNECT_TRY_COUNTER=10
 ```
 
 The following table wil give you an introduction about the available flags and their purpose: 
 
-
-
 |Name|Description|
 |-|-|
-|BAT_TOPIC| The Topic name ,where the measured voltage will be transfered.|
-|BELL_TOPIC|The Topic, in wicht the state will be set to 1|
-|WIFI_CONNECT_TRY_COUNTER|This is the maximum retry count, for connecting to the WIFI.|
-                -D BATT_LOW_VOLTAGE=1.1
-                -D BATT_WARNING_VOLTAGE=3.2
-                -D WIFI_CONNECT_TRY_COUNTER=10
+|WIFI_CONNECT_TRY_COUNTER|This will set the retry count when trying to connect to the WIFI|
 
 ## :rocket: Upload the firmware
 After a successfull build you can upload it to your connected device with: 
@@ -149,6 +151,7 @@ The Configuration is done with an json file. An example of it looks like this:
         "password": "Password"
     },
     "mqtt": {
+        "basetopic": "MyBaseTopic",
         "server": "My Server IP",
         "port": 1235,
         "user": "Username",
@@ -170,6 +173,9 @@ The following table will give you more insights about the settings.
 |mqtt|port|The Mqtt Port.|
 |mqtt|user|The username when authentication is configured.|
 |mqtt|password|The password when authentication is configured.|
+|mqtt|basetopic|This will set the basetopic that will be used to send the message (described above)|
+
+
 
 
 

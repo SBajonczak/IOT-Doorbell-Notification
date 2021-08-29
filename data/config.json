@@ -4,6 +4,7 @@
         "password":"Tumalonga2411"
     },
     "mqtt":{
+        "basetopic":"dev",
         "server":"192.168.178.201",
         "username":"sascha",
         "password":"tumalonga2411",
