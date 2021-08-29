@@ -9,8 +9,6 @@ public:
   BatteryProcessor();
   void setup();
   float getVolt();
-  bool IsLowWarning();
-  bool IsLow();
 
 private:
   float adjust;

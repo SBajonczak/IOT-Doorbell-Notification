@@ -87,6 +87,36 @@ You can Build your firmware very easyly with the following command:
 ```bash
 make build-complete
 ```
+## Compilerflags
+For the behaviour of the device, I inserted some compilerflags. These flags can be set into the platformio.ini at the device block under the `build_flags` option.
+
+```ini
+
+[env:espdev/complete]
+platform = espressif8266
+board = d1_mini
+framework = arduino
+build_flags =   
+                -D BAT_TOPIC="dev/test/bat"
+                -D BELL_TOPIC="dev/test/ring"
+                -D BATT_LOW_VOLTAGE=1.1
+                -D BATT_WARNING_VOLTAGE=3.2
+                -D WIFI_CONNECT_TRY_COUNTER=10
+```
+
+The following table wil give you an introduction about the available flags and their purpose: 
+
+
+
+|Name|Description|
+|-|-|
+|BAT_TOPIC| The Topic name ,where the measured voltage will be transfered.|
+|BELL_TOPIC|The Topic, in wicht the state will be set to 1|
+|WIFI_CONNECT_TRY_COUNTER|This is the maximum retry count, for connecting to the WIFI.|
+                -D BATT_LOW_VOLTAGE=1.1
+                -D BATT_WARNING_VOLTAGE=3.2
+                -D WIFI_CONNECT_TRY_COUNTER=10
+
 ## :rocket: Upload the firmware
 After a successfull build you can upload it to your connected device with: 
 
