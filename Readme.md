@@ -1,5 +1,4 @@
-![image](https://github.com/SBajonczak/hivemonitor/workflows/PlatformIO%20CI/badge.svg)
-![image](https://img.shields.io/github/v/tag/SBajonczak/hivemonitor.svg)
+[![PlatformIO CI](https://github.com/SBajonczak/IOT-Doorbell-Notification/actions/workflows/platformio-ci.yaml/badge.svg)](https://github.com/SBajonczak/IOT-Doorbell-Notification/actions/workflows/platformio-ci.yaml)
 
 ## :ledger: Index
 **Table of Contents**
