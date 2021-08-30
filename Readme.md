@@ -41,22 +41,31 @@ The Bell must be ringing, whatever happens. So the new architecture must follow 
 You will se, that the ESP Device will __attached__ to the doorbell as a secondary device.  
 
 
-
 # :electric_plug:  Hardwaresetup 
-So ater different tryouts, I reuslted with this diagram: 
 
-![Hardware Setup](./Wiring_Wemos.PNG)
-I Use the optocoupler, because this will wake up my wemos device. This device will be battery powered to. 
+So I must separate the two circuit from each other. Because when the bell starts to ring, and the ESP will get the full power of the current transformer...it will be fried by the higher voltage.
 
+So I must separate the tow circuit. I decided to use a optocoupler to to this. 
+
+An (simple description) optocoupler contains internally a LED and a sensor. When the LED turns on, the sensor will recognize it. When the sensor indicate a light, it will close the second circuit, like a switch. When the LED turns of, it will interrupt the circuit.
+
+The Internal LED of the optocoupler has a maximum volatage of 1.2 V. So I must attach a resitor befor the optocopler, to reduce the input voltage. 
 
 ## Components List
 I Ordered the following parts from my local seller
 
-* Wemos D1 Mini
+* Wemos D1 Mini or an  ESP01s
 * Resistor, 330Ω
 * Diode, 1N4148
 * Optocoupler, PC817
 
+## Wemos D1 mini
+
+![Hardware Setup](./D1_Mini.PNG)
+
+## ESP01 S
+
+![Hardware Setup](./ESP01_s.PNG)
 
 # :notebook:Pre-Requisites
 
@@ -73,8 +82,10 @@ Here some description about the used branches
 
 
 # MQTT
+
 The Data will be transfered to the configured MQTT Server.
-The default topic name will be build on the configured basetopic, concatenated with the unique deviced id. 
+The default topic name will be build on the configured _basetopic_, concatenated with the unique deviced id. 
+
 Then followed by the active or the voltage value.
 
 In my setup it will shown up like this: 
@@ -86,20 +97,21 @@ In my setup it will shown up like this:
 |{_BseTopic_}/{_UniqueDeviceID_}/voltage|This value will hold the last measured voltage.|
 
 # :nut_and_bolt: Development Environment
-First of all, the follwing commands required an installation of Platform IO. You can install it with the follwoing command: 
+First of all, the following commands required an installation of Platform IO. You can install it with the following command: 
 
 ```bash
 setup-virtualenv
 ```
 
 ## :hammer: Build the Firmware
-You can Build your firmware very easyly with the following command:
+You can Build your firmware very easy with the following command:
 
 ```bash
 make build-complete
 ```
 ## Compilerflags
-For the behaviour of the device, I inserted some compilerflags. These flags can be set into the platformio.ini at the device block under the `build_flags` option.
+For the behaviour of the device, I inserted some compilerflags. 
+These flags can be set into the platformio.ini at the device block under the `build_flags` option.
 
 ```ini
 
@@ -107,8 +119,7 @@ For the behaviour of the device, I inserted some compilerflags. These flags can 
 platform = espressif8266
 board = d1_mini
 framework = arduino
-build_flags =   
-                
+build_flags =     
                 -D WIFI_CONNECT_TRY_COUNTER=10
 ```
 
@@ -119,7 +130,7 @@ The following table wil give you an introduction about the available flags and t
 |WIFI_CONNECT_TRY_COUNTER|This will set the retry count when trying to connect to the WIFI|
 
 ## :rocket: Upload the firmware
-After a successfull build you can upload it to your connected device with: 
+After a successful build you can upload it to your connected device with: 
 
 ```bash
 make upload-firmware
@@ -130,14 +141,13 @@ In some cases you have multiple device connected. In this case, you must set the
 export PLATFORMIO_UPLOAD_PORT=/dev/ttyUSB0
 ```
 
-This upload the firmware throught the /dev/ttyUSB0 port.
+This upload the firmware througth the /dev/ttyUSB0 port.
 
 ## :page_facing_up: Upload the configuration
 ```bash
 export PLATFORMIO_UPLOAD_PORT=/dev/ttyUSB0
 make upload-config
 ```
-
 
 # Configuration 
 The Configuration is done with an json file. An example of it looks like this:
@@ -174,10 +184,6 @@ The following table will give you more insights about the settings.
 |mqtt|password|The password when authentication is configured.|
 |mqtt|basetopic|This will set the basetopic that will be used to send the message (described above)|
 
-
-
-
-
 ## Upload Predefined Configuration
 After you modified the configuration to your setting, you can upload this to your device.
 ```bash
@@ -185,5 +191,6 @@ After you modified the configuration to your setting, you can upload this to you
 ```
 
 # Planned Features
-
 Nothing planed at the moment
+
+Maybe a camery integration or so :)
