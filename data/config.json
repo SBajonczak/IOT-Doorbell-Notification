@@ -1,13 +1,23 @@
 {
-    "wifi":{
-        "ssid":"Ponyhof",
-        "password":"Tumalonga2411"
+    "sleep": {
+        "timeinMinutes": 35
     },
-    "mqtt":{
-        "basetopic":"dev",
-        "server":"192.168.178.201",
-        "username":"sascha",
-        "password":"tumalonga2411",
-        "port":1886
+    "battery": {
+        "muliplicator": 0.0148230088
+    },
+    "wifi": {
+        "ssid": "Ponyhof",
+        "password": "",
+        "staticIp":"192.168.178.221",
+        "gateway":"192.168.178.1",
+        "subnet":"192.168.178.1"
+    },
+    "mqtt": {
+        "clientname": "Doorbell",
+        "basetopic": "dev",
+        "server": "192.168.178.201",
+        "username": "sascha",
+        "password": "tumalonga2411",
+        "port": 1886
     }
 }

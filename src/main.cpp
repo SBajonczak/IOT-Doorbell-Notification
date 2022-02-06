@@ -4,12 +4,15 @@
 
 #include "ConfigurationManager.h"
 #include "BatteryProcessor.h"
+#include "WifiManager.h"
 
 const char *BELL_TOPIC_NAME = "devices/doorbell/active";
 const char *BATTERY_TOPIC_NAME = "devices/doorbell/battery";
 WiFiClient espClient;
 PubSubClient client(espClient);
 BatteryProcessor battery;
+WifiManager wifimanager;
+
 #ifdef USE_LED
 Ticker ticker;
 #endif
@@ -50,6 +53,7 @@ void sendMQTTMessage()
   }
   String bellTopic= ConfigurationManager::getInstance()->GetBaseTopic()+"/"+ deviceId + "/active";
   String batTopic = ConfigurationManager::getInstance()->GetBaseTopic()+"/"+ deviceId + "/voltage";
+  
   client.publish(bellTopic.c_str(), "1");
   client.publish(batTopic.c_str(), String(battery.getVolt()).c_str());
   delay(1000);
@@ -69,26 +73,17 @@ void setup()
   Serial.println(ESP.getResetReason());
 
   ConfigurationManager::getInstance()->ReadSettings();
+
+
+  wifimanager.Initialize();
+  wifimanager.Connect();
+
+
   Serial.println(ConfigurationManager::getInstance()->GetWifiSsid());
-  WiFi.begin(ConfigurationManager::getInstance()->GetWifiSsid(), ConfigurationManager::getInstance()->GetWifiPassword());
-  Serial.println("Connecting to WiFi.");
-  int _try = 0;
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    Serial.print(".");
-    delay(500);
-    _try++;
-    if (_try >= WIFI_CONNECT_TRY_COUNTER)
-    {
-      Serial.println("Impossible to connect WiFi network, go to deep sleep");
-      ESP.deepSleep(0);
-    }
-  }
   Serial.println("Connected to the WiFi network");
   IPAddress ipAdress;
   ipAdress.fromString(ConfigurationManager::getInstance()->GetMqttServer());
   client.setServer(ipAdress, ConfigurationManager::getInstance()->GetMqttPort());
-
   sendMQTTMessage();
 
 #ifdef USE_LED
@@ -97,8 +92,7 @@ void setup()
 #endif
 
   Serial.println("Go to deep sleep");
-
-  ESP.deepSleep(0);
+  ESP.deepSleep(0,RFMode::RF_DISABLED);
 }
 
 void loop()

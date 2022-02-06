@@ -169,8 +169,29 @@ The Configuration is done with an json file. An example of it looks like this:
 
 }
 
-You can set and read the configuration when you use the maintenance mode.
 
+{
+    "sleep": {
+        "timeinMinutes": 0
+    },
+    "battery": {
+        "muliplicator": 0.0148230088
+    },
+    "wifi": {
+        "ssid": "WifiName",
+        "password": "Password",
+        "staticIp":"your static ip adress",
+        "gateway":"your default gateway",
+        "subnet":"your subnet"
+    },
+    "mqtt": {
+        "clientname": "Your clientname that will be visible",
+        "basetopic": "MyBaseTopic",
+        "server": "My Server IP",
+        "port": 1235,
+        "username": "Username",
+        "password": "Password" 
+}
 ```
 The following table will give you more insights about the settings.
 
@@ -178,11 +199,16 @@ The following table will give you more insights about the settings.
 |-|-|-|
 |wifi|ssid|The wifi SSID.|
 |wifi|password|The password to authenticate.|
+|wifi|gateway|Thedefault gateway for your network.|
+|wifi|staticIp|Give them a static ip to minimize the conntion time.|
+|wifi|subnet|The subnet for your network.|
+|battery|multiplicator|This is the multiplicator setting to gain the battery measurement.|
 |mqtt|server|The host for the mqtt. This can be a dns name or a ip address.|
 |mqtt|port|The Mqtt Port.|
-|mqtt|user|The username when authentication is configured.|
+|mqtt|username|The username when authentication is configured.|
 |mqtt|password|The password when authentication is configured.|
 |mqtt|basetopic|This will set the basetopic that will be used to send the message (described above)|
+|mqtt|clientname|With this name, the device will popup in your network.|
 
 ## Upload Predefined Configuration
 After you modified the configuration to your setting, you can upload this to your device.
